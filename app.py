@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, render_template
-import requests
+import requests, os
 
 app = Flask(__name__)
 
-API_KEY = '5ae2e3f221c38a28845f05b6b17c37432db21ed64fbb106cf2739220'
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 
 def get_coords(city):
     url = f'https://api.opentripmap.com/0.1/en/places/geoname?name={city}&apikey={API_KEY}'

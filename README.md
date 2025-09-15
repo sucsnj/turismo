@@ -31,3 +31,16 @@ Aplicação web que permite buscar pontos turísticos em qualquer cidade, visual
 # Clone o repositório
 git clone https://https://github.com/sucsnj/turismo.git
 cd turismo
+
+# Crie um ambiente virtual
+python -m venv .venv
+source .venv/bin/activate  # ou .venv\Scripts\activate no Windows
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Crie um arquivo .env com sua chave da OpenTripMap
+echo API_KEY=coloque_sua_chave_aqui > .env
+
+# Execute o app
+flask run

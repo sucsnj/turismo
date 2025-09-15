@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <title>Pontos Turísticos</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
   <h1>Buscar Pontos Turísticos</h1>
   <input type="text" id="endereco" placeholder="Digite a cidade">
   <button id="buscar">Buscar</button>
+
+  <div id="map" style="height: 500px; margin-top: 20px;"></div>
+
   <ul id="resultados"></ul>
 
-  <script>
-    $('#buscar').click(function() {
-      const endereco = $('#endereco').val();
-      $.get('/pontos', { endereco }, function(data) {
-        $('#resultados').empty();
-        data.forEach(ponto => {
-          $('#resultados').append(`<li><strong>${ponto.nome}</strong> - ${ponto.tipo}</li>`);
-        });
-      });
-    });
-  </script>
+
 </body>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </html>

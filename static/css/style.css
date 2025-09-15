@@ -1,0 +1,123 @@
+/* 🌐 Estilo base (acima de 1200px) */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f9f9f9;
+}
+
+h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+#endereco, #buscar {
+  font-size: 1em;
+  padding: 10px;
+}
+
+#endereco {
+  width: 60%;
+  margin-right: 10px;
+}
+
+#buscar {
+  cursor: pointer;
+}
+
+#resultados {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+#resultados li {
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-left: 4px solid #0077cc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#map {
+  height: 500px;
+  width: 100%;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+}
+
+/* 📱 Telas até 1200px */
+@media (max-width: 1200px) {
+  #endereco {
+    width: 70%;
+  }
+}
+
+/* 📱 Telas até 800px */
+@media (max-width: 800px) {
+  h1 {
+    font-size: 1.8em;
+  }
+
+  #endereco {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #buscar {
+    width: 100%;
+  }
+
+  #map {
+    height: 400px;
+  }
+}
+
+/* 📱 Telas até 600px */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  #map {
+    height: 350px;
+  }
+
+  #resultados li {
+    font-size: 0.95em;
+  }
+}
+
+/* 📱 Telas até 400px */
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.3em;
+  }
+
+  #map {
+    height: 300px;
+  }
+
+  #resultados li {
+    font-size: 0.9em;
+  }
+}
+
+/* 📱 Telas até 200px */
+@media (max-width: 200px) {
+  h1 {
+    font-size: 1em;
+  }
+
+  #map {
+    height: 250px;
+  }
+
+  #resultados li {
+    font-size: 0.8em;
+  }
+
+  #endereco, #buscar {
+    font-size: 0.8em;
+    padding: 5px;
+  }
+}

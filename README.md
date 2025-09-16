@@ -42,5 +42,10 @@ pip install -r requirements.txt
 # Crie um arquivo .env com sua chave da OpenTripMap
 echo API_KEY=coloque_sua_chave_aqui > .env
 
-# Execute o app
-flask run
+# Instale o servidor redis
+sudo apt update
+sudo apt isntall redis-server
+
+# Levante o servidor redis
+redis-server daemonize yes
+

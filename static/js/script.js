@@ -75,8 +75,9 @@ function enriquecerPopupsComImagens() {
     if (!ponto.xid) return;
 
     setTimeout(() => {
-      $.get(`https://api.opentripmap.com/0.1/en/places/xid/${ponto.xid}?apikey=5ae2e3f221c38a28845f05b6b17c37432db21ed64fbb106cf2739220`)
-        .done(function (detalhes) {
+      // $.get(`https://api.opentripmap.com/0.1/en/places/xid/${ponto.xid}?apikey=5ae2e3f221c38a28845f05b6b17c37432db21ed64fbb106cf2739220`)
+      $.get(`/detalhes`, { xid: ponto.xid })  
+      .done(function (detalhes) {
           let popupContent = `<strong>${ponto.nome}</strong><br>${ponto.tipo}`;
 
           if (detalhes.preview && detalhes.preview.source) {

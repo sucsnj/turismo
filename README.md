@@ -47,5 +47,5 @@ sudo apt update
 sudo apt install redis-server
 
 # Levante o servidor redis
-redis-server daemonize yes
+redis-server --daemonize yes
 

@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 from redis_client import redis_client
 from dotenv import load_dotenv
-import requests, os, json
+import requests
+import os
+import json
 
 app = Flask(__name__)
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
+
 
 def buscar_detalhes_xid(xid):
     cache_key = f"xid:{xid}"
@@ -27,13 +30,16 @@ def buscar_detalhes_xid(xid):
     else:
         return None
 
+
 def get_coords(city):
     url = f'https://api.opentripmap.com/0.1/en/places/geoname?name={city}&apikey={API_KEY}'
     response = requests.get(url).json()
     return response.get('lat'), response.get('lon')
 
+
 def get_places(lat, lon):
-    url = f'https://api.opentripmap.com/0.1/en/places/radius?radius=2000&lon={lon}&lat={lat}&rate=2&format=json&apikey={API_KEY}'
+    url = f'https://api.opentripmap.com/0.1/en/places/radius?radius=2000& \
+        lon={lon}&lat={lat}&rate=2&format=json&apikey={API_KEY}'
     response = requests.get(url).json()
     return [
         {
@@ -68,12 +74,13 @@ def detalhes():
     xid = request.args.get('xid')
     if not xid:
         return jsonify({'erro': 'XID não fornecido'}), 400
-    
+
     dados = buscar_detalhes_xid(xid)
     if not dados:
         return jsonify({'erro': 'Detalhes não encontrados'}), 404
-    
+
     return jsonify(dados)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

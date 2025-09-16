@@ -25,4 +25,4 @@ jobs:
       run: flake8 .
 
     - name: Rodar testes com pytest
-      run: pytest || echo "Sem testes por enquanto"
+      run: pytest -v

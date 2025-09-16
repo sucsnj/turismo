@@ -10,7 +10,7 @@ app = Flask(__name__)
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
 
-base = f"https://api.opentripmap.com/0.1/en/places/"
+base = "https://api.opentripmap.com/0.1/en/places/"
 
 
 def buscar_detalhes_xid(xid):
@@ -42,8 +42,9 @@ def get_coords(city):
 
 
 def get_places(lat, lon):
-    query = f'radius?radius=2000&lon={lon}&lat={lat}&rate=2&format=json&apikey={API_KEY}'
-    url = base + query
+    query = f'radius?radius=2000&lon={lon}&lat={lat}&rate=2&format=json&'
+    api = f'apikey={API_KEY}'
+    url = base + query + api
     response = requests.get(url).json()
     return [
         {
@@ -56,9 +57,11 @@ def get_places(lat, lon):
         for p in response
     ]
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/pontos', methods=['GET'])
 def pontos_turisticos():
@@ -72,6 +75,7 @@ def pontos_turisticos():
 
     pontos = get_places(lat, lon)
     return jsonify(pontos)
+
 
 @app.route('/detalhes', methods=['GET'])
 def detalhes():

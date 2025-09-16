@@ -44,7 +44,7 @@ echo API_KEY=coloque_sua_chave_aqui > .env
 
 # Instale o servidor redis
 sudo apt update
-sudo apt isntall redis-server
+sudo apt install redis-server
 
 # Levante o servidor redis
 redis-server daemonize yes

@@ -10,6 +10,8 @@ app = Flask(__name__)
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
 
+base = f"https://api.opentripmap.com/0.1/en/places/"
+
 
 def buscar_detalhes_xid(xid):
     cache_key = f"xid:{xid}"
@@ -18,9 +20,10 @@ def buscar_detalhes_xid(xid):
     if cached:
         print("Tem cache!")
         return json.loads(cached)
-    
+
     print("Sem cache - procurando na API")
-    url = f"https://api.opentripmap.com/0.1/en/places/xid/{xid}?apikey={API_KEY}"
+    query = f"xid/{xid}?apikey={API_KEY}"
+    url = base + query
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -32,14 +35,15 @@ def buscar_detalhes_xid(xid):
 
 
 def get_coords(city):
-    url = f'https://api.opentripmap.com/0.1/en/places/geoname?name={city}&apikey={API_KEY}'
+    query = f'geoname?name={city}&apikey={API_KEY}'
+    url = base + query
     response = requests.get(url).json()
     return response.get('lat'), response.get('lon')
 
 
 def get_places(lat, lon):
-    url = f'https://api.opentripmap.com/0.1/en/places/radius?radius=2000& \
-        lon={lon}&lat={lat}&rate=2&format=json&apikey={API_KEY}'
+    query = f'radius?radius=2000&lon={lon}&lat={lat}&rate=2&format=json&apikey={API_KEY}'
+    url = base + query
     response = requests.get(url).json()
     return [
         {

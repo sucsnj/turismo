@@ -33,8 +33,8 @@ def buscar_detalhes_xid(xid):
 
     if response.status_code == 200:
         detalhes = response.json()  # Converte a resposta em JSON
-        redis_client.setex(cache_key, 86400, json.dumps(detalhes))  # Cache de 1 dia
-        return detalhes
+        redis_client.setex(cache_key, 86400, json.dumps(detalhes))
+        return detalhes  # Retorna com cache de 1 dia
     else:
         return None  # Retorna None se a requisição falhar
 

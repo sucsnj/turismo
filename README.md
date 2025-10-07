@@ -82,6 +82,9 @@ sudo apt install redis-server
 # Levante o servidor Redis
 redis-server --daemonize yes
 
+# Parar Redis
+redis-cli shutdown
+
 # Testes e CI
 ## Para simular um push e ativar o GitHub Actions:
 

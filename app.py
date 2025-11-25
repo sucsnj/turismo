@@ -1,19 +1,11 @@
 from flask import Flask, request, jsonify, render_template
-from redis_client import redis_client
 from dotenv import load_dotenv
-import requests, os, json
+import requests, os
 
 app = Flask(__name__)
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
-
-def buscar_detalhes_place(place_id):
-    cache_key = f"place:{place_id}"
-    cached = redis_client.get(cache_key)
-    if cached:
-        return json.loads(cached)
-    return None
 
 def get_coords(city):
     url = f'https://api.geoapify.com/v1/geocode/search?text={city}&apiKey={API_KEY}'
@@ -38,8 +30,6 @@ def get_places(lat, lon):
             'place_id': prop.get('place_id'),
             'endereco': prop.get('address_line2', '')
         }
-        # salva no cache para usar depois em /detalhes
-        redis_client.setex(f"place:{lugar['place_id']}", 86400, json.dumps(lugar))
         lugares.append(lugar)
     return lugares
 
@@ -60,17 +50,10 @@ def pontos_turisticos():
     pontos = get_places(lat, lon)
     return jsonify(pontos)
 
+# Se não quiser detalhes extras, pode remover essa rota
 @app.route('/detalhes', methods=['GET'])
 def detalhes():
-    place_id = request.args.get('place_id')
-    if not place_id:
-        return jsonify({'erro': 'place_id não fornecido'}), 400
-    
-    dados = buscar_detalhes_place(place_id)
-    if not dados:
-        return jsonify({'erro': 'Detalhes não encontrados'}), 404
-    
-    return jsonify(dados)
+    return jsonify({'erro': 'Detalhes não implementados sem Redis'}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

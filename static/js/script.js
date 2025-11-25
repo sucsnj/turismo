@@ -22,7 +22,7 @@ $(document).ready(function () {
           attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Fase 1: renderiza marcadores e lista
+        // Renderiza marcadores e lista
         data.forEach((ponto, index) => {
           const lat = ponto.lat;
           const lon = ponto.lon;
@@ -48,9 +48,6 @@ $(document).ready(function () {
           `);
         });
 
-        // Fase 2: busca lenta de detalhes (se quiser enriquecer)
-        enriquecerPopupsComDetalhes();
-
       } else {
         $('#resultados').append('<li>Nenhum ponto turístico encontrado.</li>');
       }
@@ -69,28 +66,3 @@ $(document).ready(function () {
     }
   });
 });
-
-// Função para enriquecer popups com detalhes extras do cache
-function enriquecerPopupsComDetalhes() {
-  markers.forEach(({ marker, ponto }, i) => {
-    if (!ponto.place_id) return;
-
-    setTimeout(() => {
-      $.get(`/detalhes`, { place_id: ponto.place_id })
-        .done(function (detalhes) {
-          let popupContent = `<strong>${detalhes.nome}</strong><br>${detalhes.tipo}`;
-          if (detalhes.endereco) {
-            popupContent += `<br>${detalhes.endereco}`;
-          }
-          popupContent += `
-            <br><a href="https://www.google.com/maps/dir/?api=1&destination=${detalhes.lat},${detalhes.lon}" target="_blank">🗺️ Ir com Google Maps</a>
-            <br><a href="https://waze.com/ul?ll=${detalhes.lat},${detalhes.lon}&navigate=yes" target="_blank">🚗 Ir com Waze</a>
-          `;
-          marker.bindPopup(popupContent);
-        })
-        .fail(function (err) {
-          console.warn(`Não foi possível buscar detalhes de ${ponto.nome}`);
-        });
-    }, i * 300); // espaçamento para evitar sobrecarga
-  });
-}

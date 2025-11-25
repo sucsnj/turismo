@@ -29,9 +29,10 @@ $(document).ready(function () {
 
           const popupContent = `
             <strong>${ponto.nome}</strong><br>
-            ${ponto.tipo}<br><br>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}" target="_blank">🗺️ Ir com Google Maps</a><br>
-            <a href="https://waze.com/ul?ll=${lat},${lon}&navigate=yes" target="_blank">🚗 Ir com Waze</a>
+            ${ponto.tipo}<br>
+            ${ponto.endereco ? ponto.endereco + '<br>' : ''}
+            <br><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}" target="_blank">🗺️ Ir com Google Maps</a>
+            <br><a href="https://waze.com/ul?ll=${lat},${lon}&navigate=yes" target="_blank">🚗 Ir com Waze</a>
           `;
 
           const marker = L.marker([lat, lon])
@@ -47,8 +48,8 @@ $(document).ready(function () {
           `);
         });
 
-        // Fase 2: busca lenta de imagens e atualiza popups
-        enriquecerPopupsComImagens();
+        // Fase 2: busca lenta de detalhes (se quiser enriquecer)
+        enriquecerPopupsComDetalhes();
 
       } else {
         $('#resultados').append('<li>Nenhum ponto turístico encontrado.</li>');
@@ -69,33 +70,27 @@ $(document).ready(function () {
   });
 });
 
-// Função para enriquecer popups com imagens, deve ser feita logo após renderização dos marcadore por limitações da API
-function enriquecerPopupsComImagens() {
+// Função para enriquecer popups com detalhes extras do cache
+function enriquecerPopupsComDetalhes() {
   markers.forEach(({ marker, ponto }, i) => {
-    if (!ponto.xid) return;
+    if (!ponto.place_id) return;
 
     setTimeout(() => {
-      // $.get(`https://api.opentripmap.com/0.1/en/places/xid/${ponto.xid}?apikey=5ae2e3f221c38a28845f05b6b17c37432db21ed64fbb106cf2739220`)
-      $.get(`/detalhes`, { xid: ponto.xid })  
-      .done(function (detalhes) {
-          let popupContent = `<strong>${ponto.nome}</strong><br>${ponto.tipo}`;
-
-          if (detalhes.preview && detalhes.preview.source) {
-            popupContent += `<br><img src="${detalhes.preview.source}" width="200" style="margin-top:8px;">`;
+      $.get(`/detalhes`, { place_id: ponto.place_id })
+        .done(function (detalhes) {
+          let popupContent = `<strong>${detalhes.nome}</strong><br>${detalhes.tipo}`;
+          if (detalhes.endereco) {
+            popupContent += `<br>${detalhes.endereco}`;
           }
-
           popupContent += `
-            <br><a href="https://www.google.com/maps/dir/?api=1&destination=${ponto.lat},${ponto.lon}" target="_blank">🗺️ Ir com Google Maps</a>
-            <br><a href="https://waze.com/ul?ll=${ponto.lat},${ponto.lon}&navigate=yes" target="_blank">🚗 Ir com Waze</a>
+            <br><a href="https://www.google.com/maps/dir/?api=1&destination=${detalhes.lat},${detalhes.lon}" target="_blank">🗺️ Ir com Google Maps</a>
+            <br><a href="https://waze.com/ul?ll=${detalhes.lat},${detalhes.lon}&navigate=yes" target="_blank">🚗 Ir com Waze</a>
           `;
-
           marker.bindPopup(popupContent);
         })
         .fail(function (err) {
-          if (err.status === 429) {
-            console.warn(`Limite atingido ao buscar imagem de ${ponto.nome}`);
-          }
+          console.warn(`Não foi possível buscar detalhes de ${ponto.nome}`);
         });
-    }, i * 300); // espaçamento para evitar bloqueio
+    }, i * 300); // espaçamento para evitar sobrecarga
   });
 }

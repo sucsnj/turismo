@@ -1,9 +1,11 @@
-let map;
-let markers = [];
-
 $(document).ready(function () {
+  let map;
+  let markers = [];
+
   $('#buscar').click(function () {
     const endereco = $('#endereco').val();
+    $('#buscar').text('Buscando...').prop('disabled', true);
+
     $.get('/pontos', { endereco }, function (data) {
       $('#resultados').empty();
       markers = [];
@@ -22,20 +24,16 @@ $(document).ready(function () {
           attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Renderiza marcadores e lista
         data.forEach((ponto, index) => {
-          const lat = ponto.lat;
-          const lon = ponto.lon;
-
           const popupContent = `
             <strong>${ponto.nome}</strong><br>
             ${ponto.tipo}<br>
             ${ponto.endereco ? ponto.endereco + '<br>' : ''}
-            <br><a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}" target="_blank">🗺️ Ir com Google Maps</a>
-            <br><a href="https://waze.com/ul?ll=${lat},${lon}&navigate=yes" target="_blank">🚗 Ir com Waze</a>
+            <br><a href="https://www.google.com/maps/dir/?api=1&destination=${ponto.lat},${ponto.lon}" target="_blank">🗺️ Google Maps</a>
+            <br><a href="https://waze.com/ul?ll=${ponto.lat},${ponto.lon}&navigate=yes" target="_blank">🚗 Waze</a>
           `;
 
-          const marker = L.marker([lat, lon])
+          const marker = L.marker([ponto.lat, ponto.lon])
             .addTo(map)
             .bindPopup(popupContent);
 
@@ -51,16 +49,20 @@ $(document).ready(function () {
       } else {
         $('#resultados').append('<li>Nenhum ponto turístico encontrado.</li>');
       }
+
+      $('#buscar').text('Buscar').prop('disabled', false);
     });
   });
 
-  // Evento de clique nos links da lista
   $('#resultados').on('click', '.focar', function (e) {
     e.preventDefault();
+    $('#resultados li').removeClass('ativo');
+    $(this).parent().addClass('ativo');
+
     const index = $(this).data('index');
     const item = markers[index];
     if (item && item.marker) {
-      map.setView(item.marker.getLatLng(), 16);
+      map.setView(item.marker.getLatLng(), 16, { animate: true });
       item.marker.openPopup();
       document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
     }

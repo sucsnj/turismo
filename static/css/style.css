@@ -1,27 +1,53 @@
-/* 🌐 Estilo base (acima de 1200px) */
+/* 🌐 Estilo base */
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f9f9f9;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #f0f4f8, #d9eaf7);
+  color: #333;
 }
 
 h1 {
   font-size: 2em;
   text-align: center;
+  margin: 20px 0;
+  color: #0077cc;
 }
 
-#endereco, #buscar {
-  font-size: 1em;
-  padding: 10px;
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 #endereco {
-  width: 60%;
+  flex: 1;
+  min-width: 250px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   margin-right: 10px;
 }
 
 #buscar {
+  padding: 12px 20px;
+  background-color: #0077cc;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#buscar:hover {
+  background-color: #005fa3;
 }
 
 #resultados {
@@ -33,91 +59,41 @@ h1 {
 #resultados li {
   background-color: #fff;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 12px;
   border-left: 4px solid #0077cc;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+#resultados li:hover {
+  transform: translateX(5px);
 }
 
 #map {
   height: 500px;
   width: 100%;
   margin-top: 20px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* 📱 Telas até 1200px */
-@media (max-width: 1200px) {
-  #endereco {
-    width: 70%;
-  }
+#resultados li.ativo {
+  background-color: #e6f2ff;
+  border-left-color: #005fa3;
 }
 
-/* 📱 Telas até 800px */
+/* Responsividade */
 @media (max-width: 800px) {
-  h1 {
-    font-size: 1.8em;
+  .search-box {
+    flex-direction: column;
   }
-
   #endereco {
-    width: 100%;
+    margin-right: 0;
     margin-bottom: 10px;
   }
-
   #buscar {
     width: 100%;
-  }
-
-  #map {
-    height: 400px;
-  }
-}
-
-/* 📱 Telas até 600px */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 1.5em;
-  }
-
-  #map {
-    height: 350px;
-  }
-
-  #resultados li {
-    font-size: 0.95em;
-  }
-}
-
-/* 📱 Telas até 400px */
-@media (max-width: 400px) {
-  h1 {
-    font-size: 1.3em;
-  }
-
-  #map {
-    height: 300px;
-  }
-
-  #resultados li {
-    font-size: 0.9em;
-  }
-}
-
-/* 📱 Telas até 200px */
-@media (max-width: 200px) {
-  h1 {
-    font-size: 1em;
-  }
-
-  #map {
-    height: 250px;
-  }
-
-  #resultados li {
-    font-size: 0.8em;
-  }
-
-  #endereco, #buscar {
-    font-size: 0.8em;
-    padding: 5px;
   }
 }

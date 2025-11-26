@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: .
+    container_name: turismo_backend
+    env_file:
+      - .env
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    container_name: turismo_nginx
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./templates/index.html:/usr/share/nginx/html/index.html:ro
+      - ./static:/usr/share/nginx/html/static
+      - /dev/null:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    restart: always

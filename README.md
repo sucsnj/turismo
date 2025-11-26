@@ -8,7 +8,6 @@ Aplicação web que permite buscar pontos turísticos em qualquer cidade, visual
 
 - 🔎 Busca por endereço ou cidade
 - 📍 Exibição de pontos turísticos no mapa
-- 🖼️ Popups com nome, tipo e imagem do local (se disponível)
 - 🧭 Botões de navegação para Google Maps e Waze
 - 📜 Lista interativa com foco automático no mapa
 - 🕶️ Interface responsiva para desktop e mobile
@@ -42,10 +41,4 @@ pip install -r requirements.txt
 # Crie um arquivo .env com sua chave da OpenTripMap
 echo API_KEY=coloque_sua_chave_aqui > .env
 
-# Instale o servidor redis
-sudo apt update
-sudo apt install redis-server
-
-# Levante o servidor redis
-redis-server --daemonize yes
 

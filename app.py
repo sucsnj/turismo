@@ -16,6 +16,7 @@ def get_coords(city):
         return lat, lon
     return None, None
 
+
 def get_places(lat, lon):
     url = f'https://api.geoapify.com/v2/places?categories=tourism&filter=circle:{lon},{lat},2000&limit=20&apiKey={API_KEY}'
     response = requests.get(url).json()
@@ -33,9 +34,11 @@ def get_places(lat, lon):
         lugares.append(lugar)
     return lugares
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/pontos', methods=['GET'])
 def pontos_turisticos():
@@ -49,6 +52,12 @@ def pontos_turisticos():
 
     pontos = get_places(lat, lon)
     return jsonify(pontos)
+
+
+@app.route("/health")
+def health():
+    return "OK", 200
+
 
 # Se não quiser detalhes extras, pode remover essa rota
 @app.route('/detalhes', methods=['GET'])

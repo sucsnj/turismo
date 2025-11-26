@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 import requests, os
+from cache import get_cache, set_cache
 
 app = Flask(__name__)
 
@@ -40,17 +41,24 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/pontos', methods=['GET'])
-def pontos_turisticos():
-    cidade = request.args.get('endereco')
+@app.route("/pontos")
+def pontos():
+    cidade = request.args.get("endereco")
     if not cidade:
-        return jsonify({'erro': 'Endereço não fornecido'}), 400
+        return jsonify({"erro": "Cidade não fornecida"}), 400
+
+    cache_key = f"pontos:{cidade}"
+    data = get_cache(cache_key)
+    if data:
+        return jsonify({"source": "cache", "data": data})
 
     lat, lon = get_coords(cidade)
     if not lat or not lon:
-        return jsonify({'erro': 'Localização não encontrada'}), 400
+        return jsonify({"erro": "Localização não encontrada"}), 400
 
     pontos = get_places(lat, lon)
+    set_cache(cache_key, pontos)
+
     return jsonify(pontos)
 
 

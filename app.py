@@ -50,7 +50,7 @@ def pontos():
     cache_key = f"pontos:{cidade}"
     data = get_cache(cache_key)
     if data:
-        return jsonify({"source": "cache", "data": data})
+        return jsonify(data), 200
 
     lat, lon = get_coords(cidade)
     if not lat or not lon:

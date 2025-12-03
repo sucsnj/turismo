@@ -4,6 +4,8 @@ services:
   backend:
     build: .
     container_name: turismo_backend
+    ports:
+      - "5000:5000"
     env_file:
       - .env
     restart: always
